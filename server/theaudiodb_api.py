@@ -23,7 +23,20 @@ def get_random_album_id_from_artist_id(artist_id: int) -> int:
     if r.status_code == 200:
         r = r.json()
         if r['album'] is not None:
-            random_album_index = randrange(0,len(r['album']))
+            random_album_index = randrange(0, len(r['album']))
             return r['album'][random_album_index]['idAlbum']
+    else:
+        raise ConnectionError
+
+
+def get_random_track_name_from_album_id(album_id: int) -> str:
+    payload = {"m": album_id}
+    r = requests.get(
+        "https://theaudiodb.com/api/v1/json/2/track.php", params=payload)
+    if r.status_code == 200:
+        r = r.json()
+        if r['track'] is not None:
+            random_track_index = randrange(0, len(r['track']))
+            return r['track'][random_track_index]['strTrack']
     else:
         raise ConnectionError
