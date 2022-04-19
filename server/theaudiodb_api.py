@@ -1,4 +1,5 @@
 import requests
+from random import randrange
 
 
 def get_artist_id_from_name(artist_name: str) -> int:
@@ -11,5 +12,18 @@ def get_artist_id_from_name(artist_name: str) -> int:
             return r.json()['artists'][0]['idArtist']
         else:
             raise KeyError
+    else:
+        raise ConnectionError
+
+
+def get_random_album_id_from_artist_id(artist_id: int) -> int:
+    payload = {"i": artist_id}
+    r = requests.get(
+        "https://theaudiodb.com/api/v1/json/2/album.php", params=payload)
+    if r.status_code == 200:
+        r = r.json()
+        if r['album'] is not None:
+            random_album_index = randrange(0,len(r['album']))
+            return r['album'][random_album_index]['idAlbum']
     else:
         raise ConnectionError
