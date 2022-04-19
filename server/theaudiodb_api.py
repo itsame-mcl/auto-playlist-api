@@ -2,7 +2,7 @@ import requests
 from random import randrange
 
 
-def check_api_health() -> bool:
+def check_tadb_health() -> bool:
     r = requests.get("https://www.theaudiodb.com/api/v1/json/2/search.php")
     if r.status_code == 200:
         return True
