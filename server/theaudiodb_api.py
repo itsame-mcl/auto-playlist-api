@@ -9,7 +9,7 @@ def get_artist_id_from_name(artist_name: str) -> int:
     if r.status_code == 200:
         r = r.json()
         if r['artists'] is not None:
-            return r.json()['artists'][0]['idArtist']
+            return r['artists'][0]['idArtist']
         else:
             raise KeyError
     else:
