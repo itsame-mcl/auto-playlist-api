@@ -1,7 +1,8 @@
 import pytest
-from server.lyricsovh_api import check_lyrs_health, get_lyrics_from_artist_and_title
+from server.lyricsovh_api import *
 
 
+# from https://stackoverflow.com/questions/15753390/how-can-i-mock-requests-and-the-response
 def mocked_requests_get(*args, **kwargs):
     class MockResponse:
         def __init__(self, json_data, status_code):
