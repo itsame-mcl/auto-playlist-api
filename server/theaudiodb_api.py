@@ -50,12 +50,20 @@ def get_random_track_id_from_album_id(album_id: int) -> int:
         raise ConnectionError
 
 
-def get_random_clip_from_artist_id(artist_id: int) -> dict:
+def get_all_clips_from_artist_id(artist_id: int) -> list:
     payload = {"i": artist_id}
     r = requests.get("https://theaudiodb.com/api/v1/json/2/mvid.php", params=payload)
     if r.status_code == 200:
         r = r.json()
-        random_clip_index = randrange(0, len(r['mvids']))
-        return {"title": r['mvids'][random_clip_index]['strTrack'], "suggested_youtube_url": r['mvids'][random_clip_index]['strMusicVid']}
+        ans = []
+        for clip in r['mvids']:
+            ans.append({"title": clip['strTrack'], "suggested_youtube_url": clip['strMusicVid']})
+        return ans
     else:
         raise ConnectionError
+
+
+def get_random_clip_from_artist_id(artist_id: int) -> dict:
+    base = get_all_clips_from_artist_id(artist_id)
+    random_clip_index = randrange(0, len(base))
+    return base[random_clip_index]

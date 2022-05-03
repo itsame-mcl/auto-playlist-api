@@ -42,6 +42,14 @@ def mocked_requests_get(*args, **kwargs):
                 "strTrackThumb": None,
                 "strMusicVid": "https://www.youtube.com/watch?v=2DaY8-Mui0I",
                 "strDescriptionEN": None
+            },
+            {
+                "idArtist": "111238",
+                "idAlbum": "2113808",
+                "idTrack": "32768007",
+                "strTrack": "Bohemian Rhapsody",
+                "strTrackThumb": "https://www.theaudiodb.com/images/media/track/thumb/tpvryx1541416122.jpg",
+                "strMusicVid": "http://www.youtube.com/watch?v=irp8CNj9qBI"
             }]}, 200)
     return MockResponse(None, 404)
 
@@ -71,6 +79,12 @@ def test_get_random_album_id_from_artist_id():
 def test_get_random_track_id_from_album_id():
     id = get_random_track_id_from_album_id(2109599)
     assert id == 32724008
+
+
+def test_get_all_clips_from_artist_id():
+    clips = get_all_clips_from_artist_id(111238)
+    assert clips == [{"title": "The Miracle", "suggested_youtube_url": "https://www.youtube.com/watch?v=2DaY8-Mui0I"},
+                     {"title": "Bohemian Rhapsody", "suggested_youtube_url": "http://www.youtube.com/watch?v=irp8CNj9qBI"}]
 
 
 def test_get_random_clip_from_artist_id():
