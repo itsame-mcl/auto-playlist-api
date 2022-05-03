@@ -1,6 +1,6 @@
 # Auto-Playlist API
 
-Usage : python  main.py -h | -f <json-file> -g <number-of-songs> -s <server-hostname> -p <server-port>
+Usage : python main.py -h | -f \<json-file\> -g \<number-of-songs\> -s \<server-hostname\> -p \<server-port\>
 
 ## Présentation
 
