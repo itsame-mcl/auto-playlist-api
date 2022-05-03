@@ -10,11 +10,11 @@ def parse_rudy_file(path: str) -> list:
     return data
 
 
-def generer_playlist_aleatoire(artistes: list, longueur: int) -> list:
+def generer_playlist_aleatoire(hostname: str, port: int, artistes: list, longueur: int) -> list:
     playlist = []
     for i in range(0, longueur):
         random_artiste_index = randrange(0, len(artistes))
-        r = requests.get("http://localhost:8000/random/" + artistes[random_artiste_index]['artiste'])
+        r = requests.get("http://" + hostname + ":" + str(port) + "/random/" + artistes[random_artiste_index]['artiste'])
         if r.status_code == 200:
             playlist.append(r.json())
         else:
@@ -33,11 +33,11 @@ def playlist_to_json(playlist: list, path: str) -> bool:
     return True
 
 
-def random_playlist_from_json(json_path: str, longueur: int = 20) -> bool:
+def random_playlist_from_json(hostname: str, port: int, json_path: str, longueur: int) -> bool:
     try:
         input = parse_rudy_file(json_path)
         output_path = dirname(normpath(json_path)) + "/playlist_" + basename(normpath(json_path))
-        playlist = generer_playlist_aleatoire(input, longueur)
+        playlist = generer_playlist_aleatoire(hostname, port, input, longueur)
         res = playlist_to_json(playlist, output_path)
     except IOError:
         return False
