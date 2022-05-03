@@ -1,6 +1,6 @@
 # Auto-Playlist API
 
-Usage : python main.py -h | -f \<json-file\> -g \<number-of-songs\> -s \<server-hostname\> -p \<server-port\>
+Usage : python main.py -h | -f \<json-file\> -g \<number-of-songs\> -s \<server-hostname\> -p \<server-port\> [--random]
 
 ## Présentation
 
@@ -14,7 +14,6 @@ playlists de vidéos musicales YouTube.
 
 Si le système hôte dispose d'une installation fonctionnelle de Python 3.7+ (compatibilité garantie avec Python 3.10) 
 et de pip, l'installation peut s'effectuer directement à partir de ce dépôt Git :
-
 ```shell
 git clone https://gitlab.com/maxence-lagalle/auto-playlist-api.git
 cd auto-playlist-api
@@ -47,7 +46,6 @@ Tous les points d'accès sont disponibles en HTTP via une requête GET.
 
 Pour utiliser le client intégré, vous devez tout d'abord disposer d'une liste d'artistes au format JSON. Ce fichier 
 peut être structuré comme suit :
-
 ```json
 [{
     "artiste": "Queen",
@@ -58,7 +56,8 @@ peut être structuré comme suit :
 }]
 ```
 
-Dans cette version, seul le champ "artiste" est obligatoire.
+Pour utiliser le système intelligent de génération de playlist (par défaut), les champs "artiste" et "note" sont nécessaires.
+La note sert à pondérer l'importance des artistes dans la playlist. Pour le système aléatoire, seul le champ "artiste" est obligatoire.
 
 Pour utiliser le client avec l'API exécutée localement et générer une playlist, il suffit de préciser le nom du fichier
 à utiliser en ligne de commande :
@@ -69,6 +68,13 @@ python main.py -f liste_artistes.json
 Cette commande lancera dans un thread séparé l'API localement, puis utilisera le client pour générer la playlist qui
 sera sauvegardée dans un fichier playlist_<nom_fichier>.json. Il est possible de modifier le port local d'exécution de 
 l'API avec l'option -p.
+
+Le système intelligent est plus long à fonctionner car il vérifie d'abord la disponibilité des paroles des chansons de
+chaque artiste demandé avant de composer la playlist. Pour aller plus vite, au risque d'avoir des doublons, il est possible
+d'utiliser un système aléatoire avec l'option --random :
+```shell
+python main.py -f liste_artistes.json --random
+```
 
 Il est également possible d'utiliser ce client avec une version distante de l'API en précisant son nom d'hôte avec
 l'option -s.
@@ -93,7 +99,7 @@ graph LR;
     H[Système Hôte] --> |JSON|C;
     C[Client Auto-Playlist] --> |Requête HTTP locale/distante| S[Serveur Auto-Playlist API];
     S --> |Requête HTTP distante| A[Audio DB API];
-    S --> |Requête HTTP distante| L[Lyrics OVH api];
+    S --> |Requête HTTP distante| L[Lyrics OVH API];
     A --> |JSON| S;
     L --> |JSON| S;
     S --> |JSON| C;

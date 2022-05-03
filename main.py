@@ -24,15 +24,16 @@ class Server(uvicorn.Server):
 
 
 def launcher(argv):
-    help_string = 'Usage : main.py -f <json-file> -g <number-of-songs> -s <server-hostname> -p <server-port>'
+    help_string = 'Usage : main.py -f <json-file> -g <number-of-songs> -s <server-hostname> -p <server-port> [--random]'
     mode = 'server'
     hostname = 'localhost'
     port = 8000
     file = ''
     songs = 20
+    smart = True
     ok = True
     try:
-        opts, args = getopt.getopt(argv, "hf:g:s:p:", ["help", "file=", "songs=", "server=", "port="])
+        opts, args = getopt.getopt(argv, "hf:g:s:p:", ["help", "file=", "songs=", "server=", "port=", "random"])
     except GetoptError:
         print(help_string)
         sys.exit(2)
@@ -57,15 +58,17 @@ def launcher(argv):
             except ValueError:
                 print(help_string)
                 sys.exit(2)
+        elif opt == "--random":
+            smart = False
     if mode == "server" or (mode == "client" and hostname in ("localhost", "127.0.0.1", "::1")):
         if mode == "server":
             uvicorn.run("server:app", host=hostname, port=port, log_level="info")
         else:
             server = Server(uvicorn.Config("server:app", host=hostname, port=port, log_level="info"))
             with server.run_in_thread():
-                ok = random_playlist_from_json(hostname, port, file, songs)
+                ok = random_playlist_from_json(hostname, port, file, songs, smart)
     else:
-        ok = random_playlist_from_json(hostname, port, file, songs)
+        ok = random_playlist_from_json(hostname, port, file, songs, smart)
     if ok:
         sys.exit()
     else:
