@@ -1,0 +1,32 @@
+[{
+    "artiste": "daft punk",
+    "note": 18
+},
+{
+    "artiste":"gloria gaynor",
+    "note": 10
+},
+{
+    "artiste":"boney m",
+    "note": 5
+},
+{
+    "artiste":"oasis",
+    "note": 20
+},
+{
+    "artiste":"Bob Marley",
+    "note": 10
+},
+{
+    "artiste":"Tryo",
+    "note": 20
+},
+{
+    "artiste":"Technotronic",
+    "note": 10
+},
+{
+    "artiste":"dire straits",
+    "note": 16
+}]
